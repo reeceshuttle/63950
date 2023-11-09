@@ -11,4 +11,5 @@ python -m venv 63950
 source 63950/bin/activate
 ```
 
-can safely ignore the BERT weight missing warning due to https://huggingface.co/bert-base-uncased/discussions/4.
+Notes:
+You can safely ignore the BERT weight missing warning due to https://huggingface.co/bert-base-uncased/discussions/4.
