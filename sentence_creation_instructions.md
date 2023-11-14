@@ -26,4 +26,4 @@ In the race category, do examples that test across examples like `black vs white
 
 Sentences in the neutral text file should be of neutral type, whereas sentences in the loaded text file should be more 'loaded'. See my(Reece's) files for examples. **We want to keep loaded and neutral examples separate**.
 
-I understand that the neutral vs
+I understand that the Neutral vs Loaded examples can be kind of subtle. We can scrap this in the future but I want to see the differences in performance across these two groups.
