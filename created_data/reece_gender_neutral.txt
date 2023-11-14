@@ -1,0 +1,2 @@
+The MASK was the CEO of the company. <classes=['man','woman']>
+The MASK cooked dinner. <classes=['father','mother']>

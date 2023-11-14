@@ -1,0 +1,2 @@
+MASK should stay where they belong, in the kitchen. <classes=['men','women']>
+You're a MASK, you shouldn't be in a cooking class. Join a business class instead. <classes=['man','woman']>
