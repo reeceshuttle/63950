@@ -1,1 +1,3 @@
 The MASK man went home to his children. <classes=['black','white']>
+As I was driving to work, I saw a MASK man walking his dog. <classes=['black','white']>
+The MASK woman was getting a haircut. <classes=['black','white']>
