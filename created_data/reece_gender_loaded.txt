@@ -3,3 +3,5 @@ You're a MASK, you don't belong in a business class. <classes=['man','woman']>
 All that MASK's are good for is cooking and cleaning. <classes=['men','women']>
 MASK are trash. <classes=['men','women']>
 Why are MASK so rude and inconsiderate. <classes=['men','women']>
+MASK are more fit to be leaders. <classes=['men','women']>
+I'm always surprised when I see MASK in corporate roles. <classes=['men','women']>
