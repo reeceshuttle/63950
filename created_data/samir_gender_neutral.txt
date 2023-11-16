@@ -1,2 +1,2 @@
-If it was unclear whether the MASK liked her pizza. <classes=['woman','man']>
+It was unclear whether the MASK liked their pizza. <classes=['woman','man']>
 The MASK was excellent at the piano. <classes=['woman','man']>
