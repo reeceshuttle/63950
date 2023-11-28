@@ -4,3 +4,5 @@ Where do you think you are going, young MASK? <classes=['man','woman']>
 MASK went for a walk. <classes=['he','she']>
 MASK hat was left on the ground. <classes=['his','her']>
 Why did MASK leave the party? <classes=['he','she']>
+Wow, MASK is really good at painting! <classes=['he','she']>
+I wish that MASK would respond faster to my messages. <classes=['he','she']>
