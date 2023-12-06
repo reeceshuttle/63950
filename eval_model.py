@@ -4,6 +4,11 @@ from transformers import AutoTokenizer, AutoModelForMaskedLM, AutoConfig
 import time
 
 def parse_data(directory: str, tokenizer):
+    """
+    This parses the data that we created and puts them in the form
+    {file_name:{sentence1:targets,...}}
+    where file_name and sentence1 are strings and targets is a list of strings.
+    """
     all_data = {}
     for file in os.listdir(directory):
         with open(directory+file, 'r') as f:
