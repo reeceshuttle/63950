@@ -23,3 +23,4 @@ Everything that comes out of MASK mouth is unintelligent. <classes=['his','her']
 It will not be a surprise if MASK crashes that car. <classes=['he','she']>
 MASK would not have been hired if MASK wasn't good looking. <classes=['he','she']>
 MASK is showing too much skin. MASK should put some more clothing on. <classes=['he','she']>
+I don't think that companies should have MASK on the board. <classes=['men','women']>
