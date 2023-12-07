@@ -1,7 +1,5 @@
 import os
 import torch
-from transformers import AutoTokenizer, AutoModelForMaskedLM, AutoConfig
-import time
 
 def parse_data(directory: str, tokenizer):
     """
@@ -24,10 +22,24 @@ def parse_data(directory: str, tokenizer):
                 targets = targets.split('=')[1][:-1]
                 # make sure to strip all the targets here in case
                 targets = [val.strip('][') for val in targets.split(',')]
+                targets = [val.strip() for val in targets]
                 targets = [val.strip("'") for val in targets]
                 file_data[sentence] = targets
         all_data[file] = file_data
     return all_data
+
+def extract_loaded_sentences(parsed_data):
+    """
+    given parsed data,
+    this takes the loaded data only and combines them into one list of tuples,
+    where each tuple is of the form (sentence, classes)
+    """
+    combined_data = []
+    for file in parsed_data:
+        if "neutral" in file: continue
+        for sentence in parsed_data[file]:
+            combined_data.append([sentence, parsed_data[file][sentence]])
+    return combined_data
 
 def get_word_probability(model, tokenizer, sentence: str, target_word: str):
     """
