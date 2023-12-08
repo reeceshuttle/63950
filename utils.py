@@ -28,6 +28,13 @@ def parse_data(directory: str, tokenizer):
         all_data[file] = file_data
     return all_data
 
+def combine_sentences(data):
+    """recieves an INDIVIDIAL FILES data."""
+    combined = []
+    for sentence in data:
+        combined.append([sentence, data[sentence]])
+    return combined
+
 def extract_loaded_sentences(parsed_data):
     """
     given parsed data,
@@ -37,9 +44,26 @@ def extract_loaded_sentences(parsed_data):
     combined_data = []
     for file in parsed_data:
         if "neutral" in file: continue
-        for sentence in parsed_data[file]:
-            combined_data.append([sentence, parsed_data[file][sentence]])
+        combined_data += combine_sentences(parsed_data[file])
     return combined_data
+
+def extract_synthetic_sentences(parsed_data, group):
+    assert group in ['race', 'gender']
+    synthetic_combined_data = []
+    for file in parsed_data:
+        if "synthetic" in file and "neutral" not in file and group in file:
+            print(f'accepted {file}')
+            synthetic_combined_data += combine_sentences(parsed_data[file])
+    return synthetic_combined_data
+
+def extract_real_sentences(parsed_data, group):
+    assert group in ['race', 'gender']
+    real_combined_data = []
+    for file in parsed_data:
+        if "synthetic" not in file and "neutral" not in file and group in file:
+            print(f'accepted {file}')
+            real_combined_data += combine_sentences(parsed_data[file])
+    return real_combined_data
 
 def get_word_probability(model, tokenizer, sentence: str, target_word: str):
     """
