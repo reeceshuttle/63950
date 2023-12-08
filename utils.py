@@ -52,7 +52,7 @@ def extract_synthetic_sentences(parsed_data, group):
     synthetic_combined_data = []
     for file in parsed_data:
         if "synthetic" in file and "neutral" not in file and group in file:
-            print(f'accepted {file}')
+            print(f'accepted {file} as synthetic')
             synthetic_combined_data += combine_sentences(parsed_data[file])
     return synthetic_combined_data
 
@@ -61,9 +61,15 @@ def extract_real_sentences(parsed_data, group):
     real_combined_data = []
     for file in parsed_data:
         if "synthetic" not in file and "neutral" not in file and group in file:
-            print(f'accepted {file}')
+            print(f'accepted {file} as real')
             real_combined_data += combine_sentences(parsed_data[file])
     return real_combined_data
+
+def extract_generic_sentences(parsed_data):
+    for file in parsed_data:
+        if "generic" in file:
+            print(f'accepted {file} as generic')
+            return combine_sentences(parsed_data[file])
 
 def get_word_probability(model, tokenizer, sentence: str, target_word: str):
     """
