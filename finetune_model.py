@@ -37,7 +37,6 @@ def word_smoothing_loss(mask_logits, loss_fn: nn.MSELoss, tokens_to_even, scalin
 
 
 def train_epoch(model, tokenizer, training_data, optimizer, loss_fn):
-    time1 = time.time()
     model.train()
     total_loss = torch.zeros((1))
     for sentence, classes in training_data: # since batch size 1, sentence and classes each have 1 training example.
@@ -58,8 +57,6 @@ def train_epoch(model, tokenizer, training_data, optimizer, loss_fn):
         optimizer.zero_grad()
         loss.backward()
         optimizer.step()
-        # print('--')
-    print(f'time for 1 pass through {len(training_data)} datapoints:{round(time.time()-time1, 2)} sec')
     return total_loss
 
 def test(model, tokenizer, testing_data, loss_fn):
@@ -79,8 +76,8 @@ def full_training_loop(group):
     assert group in ['race', 'gender']
     # --------
     # vars:
-    lr = 0.0001
-    epochs = 25
+    lr = 0.00001
+    epochs = 15
     # --------
     # initing things:
     model_name = "bert-base-uncased"
@@ -90,6 +87,7 @@ def full_training_loop(group):
     parsed_data = parse_data("created_data/", tokenizer)
     training_data = extract_synthetic_sentences(parsed_data, group=group)
     testing_data = extract_real_sentences(parsed_data, group=group)
+    generic_data = extract_generic_sentences(parsed_data)
 
     loss_fn = nn.MSELoss(reduction='sum') # dont average because the loss is super small
     
@@ -109,26 +107,33 @@ def full_training_loop(group):
     # before training logging:
     train_loss = test(model, tokenizer, training_data, loss_fn)
     test_loss = test(model, tokenizer, testing_data, loss_fn)
+    generic_loss = test(model, tokenizer, generic_data, loss_fn)
     wandb.log({'train_loss':train_loss.item(), 
                    'epoch':0,
-                   'test_loss': test_loss.item()})
+                   'test_loss': test_loss.item(),
+                   'generic_loss':generic_loss.item()
+                   })
     
     shuffled_data = training_data
     for epoch in range(epochs):
+        epoch_start = time.time()
         random.shuffle(shuffled_data)
         total_loss_of_epoch = train_epoch(model, tokenizer, shuffled_data, optimizer, loss_fn)
         train_loss = test(model, tokenizer, training_data, loss_fn)
         test_loss = test(model, tokenizer, testing_data, loss_fn)
+        generic_loss = test(model, tokenizer, generic_data, loss_fn)
         wandb.log({'train_loss':train_loss.item(), 
                    'epoch':epoch+1,
-                   'test_loss': test_loss.item()})
+                   'test_loss': test_loss.item(),
+                   'generic_loss':generic_loss.item()})
+        print(f'epoch {epoch+1} time: {round(time.time()-epoch_start,2)} sec')
+    return model
 
 if __name__ == "__main__":
     torch.manual_seed(0) # for reproducibility
-
-    full_training_loop(group='race')
+    group = 'race'
+    finetuned_model = full_training_loop(group=group)
+    torch.save(finetuned_model.state_dict(), f'finetuned_bert_{group}.pth')
 
     # should we do batch size 1? Pure SGD
     # should we use adamW?
-    # do a lr sweep? 
-    # make a validation and training set divide
