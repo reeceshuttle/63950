@@ -86,7 +86,9 @@ def full_training_loop(group):
 
     parsed_data = parse_data("created_data/", tokenizer)
     training_data = extract_synthetic_sentences(parsed_data, group=group)
+    print(f'training data size: {len(training_data)}')
     testing_data = extract_real_sentences(parsed_data, group=group)
+    print(f'testing data size: {len(testing_data)}')
     generic_data = extract_generic_sentences(parsed_data)
 
     loss_fn = nn.MSELoss(reduction='sum') # dont average because the loss is super small
