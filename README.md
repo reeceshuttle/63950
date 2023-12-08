@@ -17,10 +17,11 @@ source 63950/bin/activate
 pip install -r requirements.txt
 ```
 
-- Optional: to run finetuning and use WandB:
+- If you want to run our finetuning script, install WandB and export your API key(alternatively, delete the lines of code using WandB. It is only used for logging):
 
 ```
-export WANDB_API_KEY="_KEY_HERE_"
+pip install wandb
+export WANDB_API_KEY="_YOUR_KEY_HERE_"
 ```
 
 ### Usage:
