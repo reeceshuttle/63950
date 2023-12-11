@@ -1,6 +1,7 @@
 import torch
 import torch.nn as nn
 from transformers import AutoTokenizer, AutoModelForMaskedLM
+from eval_model import test_model_preready
 import time
 from utils import *
 
@@ -72,6 +73,27 @@ def test(model, tokenizer, testing_data, loss_fn):
         total_loss += loss
     return total_loss
 
+def wandb_logging(model, tokenizer, training_data, testing_data, generic_data, loss_fn, group, epoch):
+    # print(f'doing train loss:\n')
+    train_loss = test(model, tokenizer, training_data, loss_fn)
+    # print('doing train bias score')
+    train_bias_score = test_model_preready(model, tokenizer, training_data)
+    # print(f'train bias score:{train_bias_score}\n\n') # debugging nan behavior
+    test_loss = test(model, tokenizer, testing_data, loss_fn)
+    test_bias_score = test_model_preready(model, tokenizer, testing_data)
+    to_log = {'epoch':epoch,
+              'train_loss':train_loss.item(), 
+              'test_loss': test_loss.item(),
+              'train_bias_score': train_bias_score,
+              'test_bias_score': test_bias_score,
+              }
+    generic_loss = test(model, tokenizer, generic_data, loss_fn)
+    generic_bias_score = test_model_preready(model, tokenizer, generic_data)
+    to_log['generic_loss_race'] = generic_loss.item()
+    to_log['generic_bias_score_race'] = generic_bias_score
+
+    wandb.log(to_log)
+
 def full_training_loop(group):
     assert group in ['race', 'gender']
     # --------
@@ -107,32 +129,20 @@ def full_training_loop(group):
     "total_epochs": epochs,
     "group": group})
     # before training logging:
-    train_loss = test(model, tokenizer, training_data, loss_fn)
-    test_loss = test(model, tokenizer, testing_data, loss_fn)
-    generic_loss = test(model, tokenizer, generic_data, loss_fn)
-    wandb.log({'train_loss':train_loss.item(), 
-                   'epoch':0,
-                   'test_loss': test_loss.item(),
-                   'generic_loss':generic_loss.item()
-                   })
+    wandb_logging(model, tokenizer, training_data, testing_data, generic_data, loss_fn, group, epoch=0)
     
     shuffled_data = training_data
     for epoch in range(epochs):
         epoch_start = time.time()
         random.shuffle(shuffled_data)
         total_loss_of_epoch = train_epoch(model, tokenizer, shuffled_data, optimizer, loss_fn)
-        train_loss = test(model, tokenizer, training_data, loss_fn)
-        test_loss = test(model, tokenizer, testing_data, loss_fn)
-        generic_loss = test(model, tokenizer, generic_data, loss_fn)
-        wandb.log({'train_loss':train_loss.item(), 
-                   'epoch':epoch+1,
-                   'test_loss': test_loss.item(),
-                   'generic_loss':generic_loss.item()})
+        wandb_logging(model, tokenizer, training_data, testing_data, generic_data, loss_fn, group, epoch=epoch+1)
         print(f'epoch {epoch+1} time: {round(time.time()-epoch_start,2)} sec')
     return model
 
 if __name__ == "__main__":
     torch.manual_seed(0) # for reproducibility
+    random.seed(0) # for reproducibility
     group = 'race'
     finetuned_model = full_training_loop(group=group)
     torch.save(finetuned_model.state_dict(), f'finetuned_bert_{group}.pth')

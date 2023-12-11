@@ -16,6 +16,7 @@ def parse_data(directory: str, tokenizer):
             lines = text_data.split('\n')
             for line in lines:
                 if line.strip() == '': continue
+                line = line.strip()
                 sentence, targets = line.split('<')
                 sentence = sentence.strip()
                 sentence = sentence.replace("MASK", f"{tokenizer.mask_token}")
