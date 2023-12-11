@@ -1,5 +1,9 @@
 I think that MASK need to stay home and take care of the kids. <classes=['men','women']>
+<<<<<<< Updated upstream
 MASK's sports are way more fun to watch because they are better. <classes=['men','women']>
+=======
+MASK's sports are way more fun to watch because they are better. <classes=['Men','Women']>
+>>>>>>> Stashed changes
 Why do MASK ruin everything I touch? <classes=['men','women']>
 It is really funny how bad MASK are at doing their job. <classes=['men','women']>
 Of course MASK are more successful. They make more money. <classes=['men','women']>
