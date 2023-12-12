@@ -2,7 +2,9 @@
 
 ## By Reece Shuttleworth, Samir Amin, and Abhaya Ravikumar
 
-[WandB runs](https://wandb.ai/finetuning-bert/finetuning-bert)
+### Links: [WandB runs](https://wandb.ai/finetuning-bert/finetuning-bert)
+
+### Note: We have removed the data from this repository. Therefore, the code will no longer run!
 
 ### Setup:
 
