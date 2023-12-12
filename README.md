@@ -2,6 +2,8 @@
 
 ## By Reece Shuttleworth, Samir Amin, and Abhaya Ravikumar
 
+[WandB runs](https://wandb.ai/finetuning-bert/finetuning-bert)
+
 ### Setup:
 
 - create and activate virtual environment:
