@@ -38,7 +38,7 @@ To run finetuning, run this command:
 python finetune_model.py
 ```
 
-To see bias score results, look at `results.ipynb`.
+To see bias score results, look at `race_results.ipynb` and `gender_results.ipynb`.
 
 ### Notes:
 
